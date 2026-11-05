@@ -150,3 +150,10 @@ a { color: inherit; }
 @media (min-width: 992px) and (max-width: 1199px) {
   #mainNavigation .navbar-nav { flex-wrap: wrap; justify-content: flex-end; }
 }
+
+.gestion-page { max-width: 850px; }
+.gestion-form { padding: clamp(1rem, 4vw, 2rem); background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: 1rem; }
+.comodidades-selector { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.comodidades-selector legend { grid-column: 1 / -1; }
+#mainNavigation .navbar-nav { flex-wrap: wrap; }
+[hidden] { display: none !important; }

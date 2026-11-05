@@ -1,3 +1,7 @@
+import { CrearAlojamientoPage, loadCrearAlojamientoPage } from "../pages/CrearAlojamientoPage.js";
+import { MisAlojamientosPage, loadMisAlojamientosPage } from "../pages/MisAlojamientosPage.js";
+import { EditarAlojamientoPage, loadEditarAlojamientoPage } from "../pages/EditarAlojamientoPage.js";
+import { AdminCrearComodidadPage, loadAdminCrearComodidadPage } from "../pages/AdminCrearComodidadPage.js";
 import { destinoProtegido } from "./permisos.js";
 import { PerfilPage, loadPerfilPage } from "../pages/PerfilPage.js";
 import { cerrarSesion, obtenerSesion } from "../state/sesion.js";
@@ -16,6 +20,10 @@ import { AdminUsuariosPage, loadAdminUsuariosPage } from "../pages/AdminUsuarios
 import { NoAutorizadoPage } from "../pages/NoAutorizadoPage.js";
 
 const pageDefinitions = {
+  "crear-alojamiento": { title: "Publicar alojamiento", path: "/alojamientos/nuevo", render: CrearAlojamientoPage, load: loadCrearAlojamientoPage },
+  "mis-alojamientos": { title: "Mis alojamientos", path: "/mis-alojamientos", render: MisAlojamientosPage, load: loadMisAlojamientosPage },
+  "editar-alojamiento": { title: "Editar alojamiento", path: "/mis-alojamientos", render: EditarAlojamientoPage, load: loadEditarAlojamientoPage },
+  "crear-comodidad": { title: "Crear comodidad", path: "/admin/comodidades/nueva", render: AdminCrearComodidadPage, load: loadAdminCrearComodidadPage },
   home: { title: "Inicio", path: "/", render: HomePage, load: loadHomePage },
   alojamientos: { title: "Alojamientos", path: "/alojamientos", render: AlojamientosPage, load: loadAlojamientosPage },
   detalle: { title: "Detalle de alojamiento", path: "/alojamientos", render: DetallePage, load: loadDetallePage },
@@ -68,7 +76,7 @@ export function router() {
   const destino = destinoProtegido(route.name, sesion);
 
   if (destino) {
-    window.history.replaceState({}, "", destino);
+    window.history.replaceState({}, "", destino === "/login" ? `/login?next=${encodeURIComponent(path)}` : destino);
     route = matchRoute(destino);
   }
 
@@ -94,7 +102,7 @@ export function router() {
 }
 
 export function navigate(path) {
-  if (!path || path === window.location.pathname) return;
+  if (!path || path === `${window.location.pathname}${window.location.search}${window.location.hash}`) return;
   window.history.pushState({}, "", path);
   router();
   window.scrollTo({ top: 0, behavior: "smooth" });

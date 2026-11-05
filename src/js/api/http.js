@@ -11,6 +11,7 @@ const mensajesHTTP = {
   400: "Revisa los datos enviados.",
   401: "Las credenciales o el token son inválidos.",
   403: "Tu usuario no tiene permiso para acceder.",
+  404: "El recurso solicitado no existe o fue eliminado.",
   409: "Los datos enviados entran en conflicto con un registro existente.",
 };
 

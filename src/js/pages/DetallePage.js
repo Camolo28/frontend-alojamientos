@@ -1,3 +1,5 @@
+import { obtenerSesion } from "../state/sesion.js";
+import { puedeGestionar } from "../utils/gestion.js";
 import { getAlojamiento } from "../api/alojamientos.js";
 import { EmptyState, ErrorState, Loading } from "../components/Feedback.js";
 import { escapeHtml, formatCop, getFirstValue, safeImageUrl } from "../utils/html.js";
@@ -23,6 +25,7 @@ function renderDetail(stay) {
       <div class="detail-cover-shade"></div>
       <div class="detail-cover-copy"><a href="/alojamientos" data-link class="back-link"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Volver al catálogo</a><span class="detail-location"><i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i>${escapeHtml(city)}</span><h1>${escapeHtml(title)}</h1></div>
     </div>
+    ${puedeGestionar(stay, obtenerSesion()?.usuario) ? `<a class="btn btn-sand mt-3" href="/alojamientos/${encodeURIComponent(stay.id)}/editar" data-link>Editar y gestionar</a>` : ""}
     <div class="row g-5 py-5">
       <div class="col-lg-8"><span class="eyebrow">Conoce el lugar</span><h2 class="h3 mt-2">Una estadía para recordar</h2><p class="detail-description">${escapeHtml(description)}</p>
         <div class="detail-features"><h2 class="h4 mb-3">Lo que ofrece</h2>${featureList.length ? `<div class="row g-3">${featureList.map((feature) => `<div class="col-sm-6"><div class="feature-chip"><i class="bi bi-check-circle-fill" aria-hidden="true"></i>${escapeHtml(feature)}</div></div>`).join("")}</div>` : `<p class="text-secondary">No hay comodidades registradas para este alojamiento.</p>`}</div>

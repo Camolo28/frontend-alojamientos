@@ -39,3 +39,18 @@ export function validarRegistro({
 
   return errores;
 }
+
+export function validarAlojamiento(datos) {
+  const errores = {};
+  for (const campo of ["titulo", "descripcion", "ciudad"]) {
+    if (!String(datos[campo] ?? "").trim()) errores[campo] = "Completa este campo.";
+  }
+  const precio = String(datos.precio_por_noche ?? "").trim();
+  if (!precio || !Number.isFinite(Number(precio)) || Number(precio) <= 0) {
+    errores.precio_por_noche = "El precio debe ser un número mayor que cero.";
+  }
+  return errores;
+}
+export function validarComodidad(nombre) {
+  return String(nombre ?? "").trim() ? {} : { nombre: "Escribe el nombre de la comodidad." };
+}

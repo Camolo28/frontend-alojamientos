@@ -8,7 +8,7 @@ window.bootstrap = bootstrap;
 document.addEventListener("click", handleDocumentClick);
 window.addEventListener("popstate", router);
 window.addEventListener("sesion-expirada", () => {
-  window.history.replaceState({}, "", "/login");
+  window.history.replaceState({}, "", `/login?next=${encodeURIComponent(window.location.pathname)}`);
   router();
   const mensaje = document.querySelector("#login-mensaje");
   if (mensaje) {
