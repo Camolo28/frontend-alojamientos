@@ -1,0 +1,64 @@
+function validarCorreo(correo) {
+  const valor = correo.trim();
+  return valor.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+}
+
+export function validarLogin({ correo = "", contrasena = "" }) {
+  const errores = {};
+
+  if (!validarCorreo(correo)) {
+    errores.correo = "Ingresa un correo electrónico válido.";
+  }
+
+  if (contrasena.length < 1 || contrasena.length > 128) {
+    errores.contrasena = "Ingresa una contraseña de hasta 128 caracteres.";
+  }
+
+  return errores;
+}
+
+export function validarRegistro({
+  nombre = "",
+  correo = "",
+  contrasena = "",
+  confirmarContrasena = "",
+}) {
+  const errores = validarLogin({ correo, contrasena });
+
+  if (nombre.trim().length > 100) {
+    errores.nombre = "El nombre debe tener máximo 100 caracteres.";
+  }
+
+  if (contrasena.length < 6 || contrasena.length > 128) {
+    errores.contrasena = "La contraseña debe tener entre 6 y 128 caracteres.";
+  }
+
+  if (confirmarContrasena !== contrasena) {
+    errores.confirmarContrasena = "Las contraseñas deben coincidir.";
+  }
+
+  return errores;
+}
+
+export function validarAlojamiento(datos) {
+  const errores = {};
+  for (const campo of ["titulo", "descripcion", "ciudad"]) {
+    if (!String(datos[campo] ?? "").trim()) errores[campo] = "Completa este campo.";
+  }
+  for (const [campo, maximo] of Object.entries({ titulo: 200, descripcion: 10000, ciudad: 100 })) {
+    if (String(datos[campo] ?? "").trim().length > maximo) {
+      errores[campo] = `Usa como máximo ${maximo} caracteres.`;
+    }
+  }
+  const precio = String(datos.precio_por_noche ?? "").trim();
+  if (!precio || !Number.isFinite(Number(precio)) || Number(precio) < 0.01 || Number(precio) > 9999999999.99) {
+    errores.precio_por_noche = "Ingresa un precio entre 0,01 y 9.999.999.999,99.";
+  }
+  return errores;
+}
+export function validarComodidad(nombre) {
+  const valor = String(nombre ?? "").trim();
+  if (!valor) return { nombre: "Escribe el nombre de la comodidad." };
+  if (valor.length > 100) return { nombre: "Usa como máximo 100 caracteres." };
+  return {};
+}
