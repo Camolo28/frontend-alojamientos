@@ -1,5 +1,10 @@
 export const routes = [
   { pattern: /^\/$/, name: "home" },
+  { pattern: /^\/registro\/?$/, name: "registro" },
+  { pattern: /^\/login\/?$/, name: "login" },
+  { pattern: /^\/perfil\/?$/, name: "perfil" },
+  { pattern: /^\/admin\/usuarios\/?$/, name: "admin-usuarios" },
+  { pattern: /^\/no-autorizado\/?$/, name: "no-autorizado" },
   { pattern: /^\/alojamientos\/?$/, name: "alojamientos" },
   { pattern: /^\/alojamientos\/([^/]+)\/?$/, name: "detalle" },
   { pattern: /^\/comodidades\/?$/, name: "comodidades" },
