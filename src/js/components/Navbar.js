@@ -1,3 +1,4 @@
+import { obtenerSesion } from "../state/sesion.js";
 export function Navbar(activePath = "") {
   const links = [
     ["/", "Inicio", "bi-house-door"],
@@ -5,6 +6,20 @@ export function Navbar(activePath = "") {
     ["/comodidades", "Comodidades", "bi-stars"],
     ["/estado-api", "Estado de API", "bi-activity"],
   ];
+    const sesion = obtenerSesion();
+
+  if (sesion) {
+    links.push(["/perfil", "Mi perfil", "bi-person-circle"]);
+
+    if (sesion.usuario.rol === "admin") {
+      links.push(["/admin/usuarios", "Usuarios registrados", "bi-people"]);
+    }
+  } else {
+    links.push(
+      ["/registro", "Registrarse", "bi-person-plus"],
+      ["/login", "Iniciar sesión", "bi-box-arrow-in-right"],
+    );
+  }
 
   return `
     <nav class="navbar navbar-expand-lg navbar-dark site-navbar sticky-top" aria-label="Navegación principal">
@@ -23,6 +38,12 @@ export function Navbar(activePath = "") {
                 <i class="bi ${icon} me-1" aria-hidden="true"></i>${label}
               </a>
             `).join("")}
+                        ${sesion ? `
+              <button type="button" id="cerrar-sesion"
+                class="nav-link text-start bg-transparent border-0">
+                <i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>Cerrar sesión
+              </button>
+            ` : ""}
           </div>
         </div>
       </div>
