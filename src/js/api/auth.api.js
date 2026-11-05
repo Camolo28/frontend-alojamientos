@@ -33,5 +33,8 @@ export async function iniciarSesion({ correo, contrasena }) {
 
 export async function listarUsuarios(token) {
   const respuesta = await request("/api/v1/admin/usuarios", { token });
+  if (!Array.isArray(respuesta?.usuarios)) {
+    throw new Error("El servidor devolvió un listado de usuarios inválido.");
+  }
   return respuesta.usuarios;
 }

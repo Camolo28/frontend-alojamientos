@@ -38,10 +38,11 @@ export async function request(path, options = {}) {
   if (!response.ok) {
     if (response.status === 401 && token && obtenerSesion()?.token === token) {
       cerrarSesion();
+      globalThis.window?.dispatchEvent(new Event("sesion-expirada"));
     }
 
     const datos = await response.json().catch(() => null);
-    const mensaje = [datos?.mensaje, datos?.message, datos?.error]
+    const mensaje = [datos?.mensaje, datos?.message, datos?.error?.message, datos?.error?.mensaje, datos?.error]
       .find((valor) => typeof valor === "string" && valor.trim());
 
     const error = new Error(

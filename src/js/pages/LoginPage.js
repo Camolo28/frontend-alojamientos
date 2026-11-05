@@ -63,7 +63,7 @@ export function loadLoginPage() {
 
     try {
       await iniciarSesion(datos);
-      navigate("/perfil");
+      if (form.isConnected) navigate("/perfil");
     } catch (error) {
       mensaje.className = "mt-3 mb-0 text-danger";
       mensaje.textContent = error.status === 401

@@ -1,3 +1,4 @@
+import { destinoProtegido } from "./permisos.js";
 import { PerfilPage, loadPerfilPage } from "../pages/PerfilPage.js";
 import { cerrarSesion, obtenerSesion } from "../state/sesion.js";
 import { Footer } from "../components/Footer.js";
@@ -64,14 +65,7 @@ export function router() {
     let route = matchRoute(path);
 
     const sesion = obtenerSesion();
-  const requiereSesion = ["perfil", "admin-usuarios"].includes(route.name);
-  let destino;
-
-  if (requiereSesion && !sesion) {
-    destino = "/login";
-  } else if (route.name === "admin-usuarios" && sesion.usuario.rol !== "admin") {
-    destino = "/no-autorizado";
-  }
+  const destino = destinoProtegido(route.name, sesion);
 
   if (destino) {
     window.history.replaceState({}, "", destino);
