@@ -45,12 +45,20 @@ export function validarAlojamiento(datos) {
   for (const campo of ["titulo", "descripcion", "ciudad"]) {
     if (!String(datos[campo] ?? "").trim()) errores[campo] = "Completa este campo.";
   }
+  for (const [campo, maximo] of Object.entries({ titulo: 200, descripcion: 10000, ciudad: 100 })) {
+    if (String(datos[campo] ?? "").trim().length > maximo) {
+      errores[campo] = `Usa como máximo ${maximo} caracteres.`;
+    }
+  }
   const precio = String(datos.precio_por_noche ?? "").trim();
-  if (!precio || !Number.isFinite(Number(precio)) || Number(precio) <= 0) {
-    errores.precio_por_noche = "El precio debe ser un número mayor que cero.";
+  if (!precio || !Number.isFinite(Number(precio)) || Number(precio) < 0.01 || Number(precio) > 9999999999.99) {
+    errores.precio_por_noche = "Ingresa un precio entre 0,01 y 9.999.999.999,99.";
   }
   return errores;
 }
 export function validarComodidad(nombre) {
-  return String(nombre ?? "").trim() ? {} : { nombre: "Escribe el nombre de la comodidad." };
+  const valor = String(nombre ?? "").trim();
+  if (!valor) return { nombre: "Escribe el nombre de la comodidad." };
+  if (valor.length > 100) return { nombre: "Usa como máximo 100 caracteres." };
+  return {};
 }

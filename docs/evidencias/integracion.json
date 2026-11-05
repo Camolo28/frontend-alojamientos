@@ -1,0 +1,21 @@
+{
+  "fecha": "2026-11-05T04:35:01.691Z",
+  "frontend": "http://localhost:4173",
+  "modo": "preview",
+  "motor": "MySQL 8.0.36",
+  "api": "Flask real, sin interceptación Fetch",
+  "resultados": [
+    "Registro real 201",
+    "POST/PATCH reales; persistencia después de recargar; selección completa y vacía",
+    "Catálogo de comodidades y Estado de API muestran respuestas reales",
+    "Filtro real por ciudad, resultados vacíos y navegación Atrás/Adelante sin recarga",
+    "Flask rechaza los campos inválidos con HTTP 400",
+    "Flask rechaza con 403 las tres mutaciones ajenas; conserva la sesión",
+    "Comodidad real 201 y duplicado 409",
+    "Administrador modifica alojamiento ajeno",
+    "Menú móvil se abre, navega y vuelve a quedar cerrado",
+    "Cancelar conserva el recurso; confirmar devuelve 204; consulta posterior 404",
+    "401 elimina sesión y actualiza Navbar; cierre bloquea perfil",
+    "Sin excepciones JavaScript; ancho móvil y tableta sin desbordamiento"
+  ]
+}

@@ -11,9 +11,9 @@ export function AlojamientoCard(alojamiento) {
     : `<div class="stay-card-placeholder" aria-label="Imagen no disponible"><i class="bi bi-house-heart" aria-hidden="true"></i><span>Un lugar para descansar</span></div>`;
 
   return `
-    <article class="stay-card h-100">
-      <div class="stay-card-media">${imageMarkup}<span class="stay-card-badge"><i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i>${escapeHtml(city)}</span></div>
-      <div class="p-4 d-flex flex-column h-100">
+    <article class="stay-card h-100 d-flex flex-column">
+      <div class="stay-card-media flex-shrink-0">${imageMarkup}<span class="stay-card-badge"><i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i>${escapeHtml(city)}</span></div>
+      <div class="p-4 d-flex flex-column flex-grow-1">
         <h2 class="h5 stay-card-title">${escapeHtml(title)}</h2>
         <p class="stay-card-description flex-grow-1">${escapeHtml(description)}</p>
         <div class="d-flex justify-content-between align-items-center gap-3 pt-3 border-top">

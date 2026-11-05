@@ -5,13 +5,13 @@ import { normalizarAlojamiento } from "../utils/gestion.js";
 export function AlojamientoForm(alojamiento = {}, boton = "Guardar alojamiento") {
   return `<form id="alojamiento-form" class="gestion-form">
     <label for="titulo" class="form-label">Título</label>
-    <input id="titulo" name="titulo" class="form-control mb-3" required value="${escapeHtml(alojamiento.titulo ?? "")}">
+    <input id="titulo" name="titulo" maxlength="200" class="form-control mb-3" required value="${escapeHtml(alojamiento.titulo ?? "")}">
     <label for="descripcion" class="form-label">Descripción</label>
-    <textarea id="descripcion" name="descripcion" class="form-control mb-3" rows="5" required>${escapeHtml(alojamiento.descripcion ?? "")}</textarea>
+    <textarea id="descripcion" name="descripcion" maxlength="10000" class="form-control mb-3" rows="5" required>${escapeHtml(alojamiento.descripcion ?? "")}</textarea>
     <label for="ciudad" class="form-label">Ciudad</label>
-    <input id="ciudad" name="ciudad" class="form-control mb-3" required value="${escapeHtml(alojamiento.ciudad ?? "")}">
+    <input id="ciudad" name="ciudad" maxlength="100" class="form-control mb-3" required value="${escapeHtml(alojamiento.ciudad ?? "")}">
     <label for="precio_por_noche" class="form-label">Precio por noche (COP)</label>
-    <input id="precio_por_noche" name="precio_por_noche" type="number" min="0.01" step="0.01" class="form-control mb-4" required value="${escapeHtml(alojamiento.precio_por_noche ?? "")}">
+    <input id="precio_por_noche" name="precio_por_noche" type="number" min="0.01" max="9999999999.99" step="0.01" class="form-control mb-4" required value="${escapeHtml(alojamiento.precio_por_noche ?? "")}">
     <button class="btn btn-sand" type="submit">${escapeHtml(boton)}</button>
     <p class="mt-3" role="status" data-mensaje></p>
   </form>`;

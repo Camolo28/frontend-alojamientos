@@ -98,7 +98,7 @@ export function router() {
   });
 
   if (page.load) page.load(...route.params);
-  window.bootstrap?.Collapse.getOrCreateInstance(document.querySelector("#mainNavigation"))?.hide();
+
 }
 
 export function navigate(path) {

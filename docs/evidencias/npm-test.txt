@@ -1,0 +1,52 @@
+$ npm test
+
+
+> frontend-alojamientos@1.0.0 test
+> node --test
+
+✔ guarda y recupera token y usuario de sessionStorage (2.631514ms)
+✔ el cierre elimina la sesión y actualiza las opciones de Navbar (0.789298ms)
+✔ descarta sesiones dañadas e impide guardar datos incompletos (0.742929ms)
+✔ valida correo y contraseña de login sin exigir seis caracteres (0.733985ms)
+✔ registro valida longitud, confirmación y nombre (1.319497ms)
+✔ visitantes acceden a rutas públicas y son redirigidos en rutas privadas (0.776009ms)
+✔ solo el rol admin accede a administración y ve su enlace (0.474084ms)
+✔ registro envía POST JSON con campos del backend y omite confirmación (3.961988ms)
+✔ login consulta perfil con Bearer antes de guardar la sesión (0.728978ms)
+✔ login fallido o perfil fallido no crean sesión (1.666821ms)
+✔ perfil y listado administrativo envían Bearer y leen el contrato real (0.998073ms)
+✔ HTTP conserva estados 400, 403 y 409 y mensajes del backend (1.032115ms)
+✔ 401 elimina la sesión vigente pero una respuesta antigua no borra una nueva (0.764752ms)
+✔ HTTP distingue fallos de red, JSON inválido y respuesta vacía (0.749789ms)
+✔ escapa texto que podría interpretarse como HTML (1.24159ms)
+✔ acepta una colección JSON que ya es un arreglo (0.196647ms)
+✔ lee colecciones dentro de data con la clave del recurso (0.151518ms)
+✔ presenta precios en pesos colombianos (16.269195ms)
+✔ filtra alojamientos por título sin distinguir mayúsculas (1.008069ms)
+✔ filtra alojamientos por ciudad (0.169746ms)
+✔ identifica la ruta inicial (0.281364ms)
+✔ identifica el detalle y conserva su id (0.366893ms)
+✔ envía las rutas desconocidas a la página 404 (0.329016ms)
+✔ crear alojamiento usa POST, Bearer y los cuatro campos (6.169773ms)
+✔ editar alojamiento usa PATCH y codifica el identificador (0.895639ms)
+✔ eliminar procesa 204 sin intentar leer JSON (1.419278ms)
+✔ comodidades envía selección completa y permite retirar todas (4.490214ms)
+✔ crear comodidad usa el endpoint existente y normaliza nombre (0.765453ms)
+✔ validación rechaza textos vacíos y precios inválidos (0.849119ms)
+✔ normalización produce JSON numérico sin campos de propietario (0.369947ms)
+✔ permisos visuales distinguen propietario, administrador y terceros (0.312281ms)
+✔ mis alojamientos filtra por usuario_id incluso con ids de distinto tipo (0.418179ms)
+✔ rutas específicas preceden al detalle y tienen permisos correctos (0.674376ms)
+✔ retorno de login permite rutas conocidas y bloquea destinos externos (0.456097ms)
+✔ formulario reutilizable escapa datos y contiene campos editables (0.578131ms)
+✔ selector marca selección, escapa nombres y lee ids numéricos (0.515737ms)
+✔ CRUD propaga errores 400, 403, 404 y 409 con estado y mensaje (3.417788ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 143.254425
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.

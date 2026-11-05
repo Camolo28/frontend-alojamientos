@@ -1,125 +1,189 @@
-# Frontend Alojamientos — Sprint 3
+# Refugio — Frontend Alojamientos
 
-SPA de Refugio construida con JavaScript Vanilla, Vite, Bootstrap 5.3 y Bootstrap Icons. Conserva el catálogo público, la autenticación JWT y los permisos del Sprint 2 e incorpora CRUD de alojamientos y gestión de asociaciones con comodidades.
+Aplicación web académica SPA para consultar y publicar alojamientos, administrar sus comodidades y controlar el acceso mediante autenticación JWT, roles y propiedad de los recursos.
 
-## Instalación
+## Objetivo
 
-Node.js 22.12+ y npm. Desde la carpeta que contiene package.json:
+Integrar los tres tutoriales del curso en una interfaz modular, responsive y conectada a una API REST Flask con MySQL. Los visitantes consultan el catálogo; los usuarios registrados gestionan sus publicaciones; los administradores gestionan recursos ajenos, consultan usuarios y crean comodidades.
+
+## Tecnologías y requisitos
+
+| Capa | Herramientas |
+| --- | --- |
+| Interfaz | HTML5, CSS3, JavaScript Vanilla y módulos ES6 |
+| Desarrollo y compilación | Vite 7, npm, Node.js 22.12+ |
+| Componentes visuales | Bootstrap 5.3, Bootstrap Icons |
+| Navegación y HTTP | History API, Fetch, JSON |
+| Autenticación | JWT Bearer, sessionStorage |
+| Pruebas | node:test y node:assert, 37 casos |
+| Backend independiente | Python 3.11+, Flask, SQLAlchemy, Alembic, MySQL 8 o entorno XAMPP compatible |
+
+La aplicación necesita el backend actualizado con las migraciones 001, 002 y 003. La copia anterior del backend solo tenía autenticación. La entrega incluye por separado el complemento `api-alojamientos-completado.zip`, que completa las rutas exigidas por los tres tutoriales. Su publicación e instalación se explican en [la guía del backend](docs/backend.md).
+
+## Instalación rápida
+
+Desde Git Bash, PowerShell o una terminal equivalente:
 
 ```bash
+git clone https://github.com/Camolo28/frontend-alojamientos.git
+cd frontend-alojamientos
 npm install
+```
+
+Copia `.env.example` como `.env`. En Git Bash:
+
+```bash
 cp .env.example .env
-npm test
+```
+
+En PowerShell puedes usar `Copy-Item .env.example .env`. El contenido es:
+
+```dotenv
+VITE_API_URL=http://localhost:5000
+```
+
+Esta variable es pública y solo indica la URL de la API. Los secretos de Flask y las credenciales de MySQL pertenecen exclusivamente al `.env` del backend. Reinicia Vite al modificar la configuración.
+
+Inicia MySQL, aplica las migraciones del backend e inicia Flask. Luego ejecuta:
+
+```bash
 npm run dev
-npm run build
-npm run preview
 ```
 
-`.env` debe contener `VITE_API_URL=http://localhost:5000`. Reinicia Vite al cambiarlo. Desarrollo usa localhost:5173 y preview localhost:4173. Flask debe permitir en CORS el origen utilizado, Authorization, Content-Type y los métodos GET, POST, PATCH, DELETE y OPTIONS.
+Abre http://localhost:5173. Mantén una terminal para Flask y otra para Vite. Antes de publicar esta entrega, `main` debe integrarse según [publicación y entrega](docs/entrega.md); el clon de la rama principal anterior solo contenía el README inicial.
 
-## Alcance
+## Comandos
 
-- Catálogo, detalles, comodidades, estado de API, filtros, History API, 404 y diseño responsive.
-- Registro, login, perfil de lectura, usuarios administrativos de lectura, sessionStorage y cierre de sesión.
-- `/mis-alojamientos` filtra el listado público por `usuario_id`, incluso si los identificadores vienen como cadenas.
-- `/alojamientos/nuevo` permite publicar a usuarios autenticados.
-- `/alojamientos/:id/editar` permite gestionar al propietario o a un administrador, después de consultar el recurso.
-- Guardar datos y guardar comodidades son operaciones independientes, cada una con confirmación y error propios. La selección envía el arreglo completo `comodidades_ids`, incluido `[]` para retirar todas las relaciones.
-- Eliminar solicita confirmación y procesa 204 No Content antes de regresar a Mis alojamientos.
-- `/admin/comodidades/nueva` permite crear comodidades al administrador, con aviso específico de duplicado 409.
-- Login conserva la ruta protegida solicitada en `next`, valida que sea una ruta local conocida y aplica otra vez los permisos al navegar.
-- Un 401 del token vigente elimina la sesión y actualiza la interfaz. Un 403 conserva la sesión.
-- La API determina definitivamente autorización, propiedad y persistencia.
+| Comando | Resultado |
+| --- | --- |
+| `npm install` | Instala las dependencias del proyecto |
+| `npm ci` | Instalación reproducible desde package-lock.json |
+| `npm test` | Ejecuta las 37 pruebas de los tres sprints |
+| `npm run dev` | Servidor de desarrollo, puerto 5173 |
+| `npm run build` | Genera la versión compilada en dist |
+| `npm run preview` | Sirve la compilación en el puerto 4173 |
 
-## Contrato utilizado
+Ejecuta build antes de preview. El backend debe permitir tanto `http://localhost:5173` como `http://localhost:4173` en CORS para probar ambos modos. Si el puerto está ocupado, cierra la instancia anterior. El desarrollo usa puerto estricto 5173.
 
-| Método | Ruta | Cuerpo |
+## Estructura
+
+```text
+frontend-alojamientos/
+  index.html
+  package.json
+  package-lock.json
+  vite.config.js
+  .env.example
+  .gitignore
+  src/
+    css/main.css
+    js/
+      main.js
+      api/          Fetch, consultas públicas y mutaciones
+      state/        Sesión de la pestaña
+      router/       Rutas, navegación y permisos
+      components/   Navbar, Footer, tarjetas y formularios
+      pages/        Vistas públicas y protegidas
+      utils/        Validaciones, normalización y presentación
+  tests/
+    frontend.test.js
+    auth.test.js
+    gestion.test.js
+  docs/
+    sprint-1.md
+    sprint-2.md
+    sprint-3.md
+    arquitectura.md
+    backend.md
+    verificacion.md
+    entrega.md
+    evidencias/
+```
+
+## Módulos
+
+**Sprint 1.** Navegación SPA, catálogo público, filtro por título o ciudad, detalle con comodidades, estado de API, estados de carga/vacío/error y 404.
+
+**Sprint 2.** Registro, login, perfil de lectura, usuarios administrativos de lectura, Navbar por rol, cierre local, sesión persistente durante la pestaña y manejo de 401/403.
+
+**Sprint 3.** Publicación, listado propio, edición, eliminación confirmada, asociación completa de comodidades, creación administrativa de comodidades y retorno a una ruta protegida después del login.
+
+## Rutas
+
+| Ruta | Vista | Acceso |
 | --- | --- | --- |
-| GET | /api/v1/alojamientos | Sin cuerpo |
-| GET | /api/v1/alojamientos/:id | Sin cuerpo |
-| POST | /api/v1/alojamientos | titulo, descripcion, ciudad, precio_por_noche |
-| PATCH | /api/v1/alojamientos/:id | titulo, descripcion, ciudad, precio_por_noche |
-| DELETE | /api/v1/alojamientos/:id | Sin cuerpo; éxito 204 |
-| GET | /api/v1/comodidades | Sin cuerpo |
-| POST | /api/v1/comodidades | nombre |
-| PATCH | /api/v1/alojamientos/:id/comodidades | comodidades_ids como arreglo numérico completo |
+| `/` | Inicio | Público |
+| `/alojamientos` | Catálogo y filtro | Público |
+| `/alojamientos/:id` | Detalle y comodidades | Público |
+| `/comodidades` | Catálogo de comodidades | Público |
+| `/estado-api` | Estado del backend | Público |
+| `/registro` | Crear cuenta | Público |
+| `/login` | Iniciar sesión | Público |
+| `/perfil` | Perfil de lectura | Autenticado |
+| `/mis-alojamientos` | Publicaciones propias | Autenticado |
+| `/alojamientos/nuevo` | Publicar | Autenticado |
+| `/alojamientos/:id/editar` | Editar, asociar y eliminar | Propietario o administrador |
+| `/admin/usuarios` | Listado de usuarios | Administrador |
+| `/admin/comodidades/nueva` | Crear comodidad | Administrador |
+| `/no-autorizado` | Acceso restringido | Mensaje informativo |
+| Cualquier ruta desconocida | 404 de la SPA | Público |
 
-Las mutaciones envían `Authorization: Bearer <token>`. El usuario propietario se obtiene de `usuario_id`; las comodidades asociadas se leen como objetos `{id, nombre}` en `comodidades`. El precio usa `precio_por_noche` numérico. El usuario autenticado conserva el contrato del backend de Sprint 2 (id, correo, rol y perfil.nombre).
+## Endpoints consumidos
 
-Estos campos se basan en el enunciado y el frontend anterior. Los DTO, esquemas de respuestas y límites exactos del backend de Sprint 3 no fueron proporcionados. Los textos se validan como obligatorios, el precio como positivo y finito, y el nombre de comodidad como no vacío. Flask valida las restricciones adicionales de su contrato.
+| Método | Endpoint | Cuerpo / respuesta relevante |
+| --- | --- | --- |
+| GET | `/health` | Estado del servicio |
+| POST | `/api/v1/usuarios/registro` | nombre opcional, correo, contrasena; devuelve usuario, 201 |
+| POST | `/api/v1/usuarios/login` | correo, contrasena; devuelve access_token |
+| GET | `/api/v1/usuarios/perfil` | Usuario autenticado con perfil.nombre |
+| GET | `/api/v1/admin/usuarios` | Objeto con arreglo usuarios |
+| GET | `/api/v1/alojamientos` | Objeto con arreglo alojamientos |
+| GET | `/api/v1/alojamientos/:id` | Objeto de alojamiento y comodidades |
+| POST | `/api/v1/alojamientos` | titulo, descripcion, ciudad, precio_por_noche; 201 |
+| PATCH | `/api/v1/alojamientos/:id` | Campos del alojamiento; 200 |
+| DELETE | `/api/v1/alojamientos/:id` | Respuesta vacía 204 |
+| GET | `/api/v1/comodidades` | Objeto con arreglo comodidades |
+| POST | `/api/v1/comodidades` | nombre; 201, duplicado 409 |
+| PATCH | `/api/v1/alojamientos/:id/comodidades` | comodidades_ids completo, permite [] |
 
-## Archivos principales
+Los endpoints privados reciben `Authorization: Bearer <token>`. El propietario se toma de `usuario_id` en la respuesta y lo determina el backend durante la creación. Se conservan formatos de colección compatibles del Sprint 1.
 
-- `api/alojamientos.api.js` y `api/comodidades.api.js`: mutaciones Fetch.
-- `api/alojamientos.js`: consultas públicas conservadas.
-- `api/http.js`: JSON, Bearer, errores y 204; `client.js` reexporta para el Sprint 1.
-- `utils/gestion.js`: normalización, propiedad, filtro de publicaciones y retorno seguro.
-- `utils/validaciones.js`: formularios de los Sprints 2 y 3.
-- `components/AlojamientoForm.js` y `components/ComodidadesSelector.js`: formularios reutilizables.
-- `pages/CrearAlojamientoPage.js`, `MisAlojamientosPage.js`, `EditarAlojamientoPage.js`, `AdminCrearComodidadPage.js`.
-- `router/permisos.js`: control de navegación utilizado por las vistas y pruebas.
+## Roles y sesión
 
-Las rutas de creación y edición se reconocen antes de la ruta genérica del detalle.
+| Operación | Visitante | Usuario | Administrador |
+| --- | --- | --- | --- |
+| Consultar catálogo, detalle y comodidades | Sí | Sí | Sí |
+| Publicar | Login requerido | Sí | Sí |
+| Ver publicaciones propias | Login requerido | Sí | Sí, las propias |
+| Editar, eliminar y asociar comodidades | Login requerido | Sus alojamientos | Cualquier alojamiento |
+| Crear comodidad / listar usuarios | Login requerido | 403 | Sí |
 
-## Pruebas y estado de verificación
+La clave `alojamientos.sesion` en sessionStorage contiene el token y los datos básicos del usuario. Login consulta el perfil antes de guardarlos. Al cerrar sesión se borra esa clave. Un 401 de la sesión vigente la elimina y redibuja el login. Un 403 conserva la sesión y presenta el error. Las restricciones se aplican también en Flask.
 
-Se ejecutaron las 23 pruebas anteriores antes de modificar el proyecto. `npm test` ejecuta ahora 37 pruebas (23 anteriores y 14 nuevas), todas aprobadas. `npm run build` compila correctamente. Las nuevas pruebas cubren POST/PATCH/DELETE, 204, selección completa/vacía, normalización, validaciones, propiedad, rutas, retorno local y componentes. Fetch se simula en las pruebas de servicios.
+## Validaciones y errores
 
-También se verificaron eventos de formularios en un DOM simulado con API simulada: retorno del login, creación, listado propio, edición, asignación y retirada de comodidades, cancelación y confirmación de eliminación y acceso de administrador. Esta comprobación no incluye renderizado visual en un navegador real.
+Registro exige correo válido y contraseña de 6 a 128 caracteres; la confirmación se compara localmente. Alojamiento exige título (máximo 200), descripción (máximo 10000), ciudad (máximo 100) y precio entre 0,01 y 9.999.999.999,99 con dos decimales. Comodidad exige nombre de 1 a 100 caracteres. La API aplica las reglas definitivas.
 
-Las 14 pruebas nuevas se elaboraron para este enunciado; no se recibió el Tutorial 3 para comparar sus casos exactos. La comprobación con Flask, MySQL y las migraciones 001, 002 y 003 está pendiente. En la última revisión del backend del estudiante solo estaban disponibles autenticación, health y la migración 001. Los mocks no demuestran persistencia ni autorización real del servidor.
+El cliente procesa errores 400, 401, 403, 404 y 409, respuestas JSON inválidas y problemas de conexión. Los formularios deshabilitan sus botones mientras guardan. Datos y comodidades se guardan por separado y muestran su resultado independiente. Eliminar exige confirmación.
 
-## Verificación local y evidencias obligatorias
+## Evidencias y verificación
 
-Primero confirma que tu backend de Sprint 3 contiene las migraciones 002 y 003. Desde su entorno virtual ejecuta `python -m flask --app app db upgrade`, `python -m flask --app app db current` y `python -m flask --app app routes`. Comprueba las rutas del cuadro anterior antes de iniciar `python app.py`.
+[Informe de verificación y galería](docs/verificacion.md). Las capturas se obtuvieron en navegador con Flask y MySQL 8.0.36 reales y datos sintéticos. El informe distingue la prueba ejecutada en este entorno de la instalación y publicación pendientes en el equipo del estudiante.
 
-Con MySQL y Flask activos:
+![Inicio con datos de MySQL](docs/evidencias/01-inicio.png)
 
-1. Abre una ruta protegida sin sesión, inicia sesión y verifica el retorno a esa ruta.
-2. Publica un alojamiento. Guarda captura de Crear alojamiento y del POST 201. Verifica su aparición en Mis alojamientos y en el catálogo después de recargar.
-3. Modifica título, descripción, ciudad y precio; comprueba PATCH 200, detalle actualizado y persistencia tras F5.
-4. Selecciona comodidades y guarda; comprueba el detalle. Desmarca todas, guarda y verifica que el arreglo vacío retiró las asociaciones.
-5. Cancela primero la confirmación de eliminación y confirma que el registro permanece. Después acepta y comprueba DELETE 204 y ausencia del registro tras recargar.
-6. Usa una segunda cuenta y visita la edición del alojamiento ajeno; debe mostrar Acceso restringido. Verifica también que la API devuelva 403 al intentar mutarlo con el token de esa segunda cuenta y que la sesión permanezca activa.
-7. Con admin, edita un alojamiento ajeno y crea una comodidad. Repite el nombre para probar el 409. Captura Crear comodidad y la restricción con usuario común.
-8. Prueba recurso inexistente (404), datos inválidos (400), token inválido (401), estados vacíos y errores de conexión.
-9. Revisa las cuatro páginas nuevas a 375 px y en escritorio. Guarda las capturas de 37 pruebas aprobadas y build correcto.
+Resultados comprobados: 37 pruebas de frontend aprobadas, build correcto, 16 pruebas de backend aprobadas, migraciones hasta 003 y flujo real de registro, login, perfil, CRUD, asociaciones y autorización. Las pruebas unitarias usan mocks para aislar servicios; las evidencias de integración se obtuvieron contra la API real. Los archivos originales de los tutoriales no se recibieron, por lo que se cubre el enunciado sin afirmar equivalencia textual de sus casos de prueba.
 
-No incluyas contraseñas o JWT en las evidencias.
+## Documentación por etapa
 
-## Git, Issue y Pull Request
+- [Sprint 1](docs/sprint-1.md)
+- [Sprint 2](docs/sprint-2.md)
+- [Sprint 3](docs/sprint-3.md)
+- [Arquitectura](docs/arquitectura.md)
+- [Backend y MySQL](docs/backend.md)
+- [Pruebas y evidencias](docs/verificacion.md)
+- [Integración de ramas y entrega final](docs/entrega.md)
 
-Mientras los PR de los Sprints 1 y 2 permanezcan abiertos por revisión, crea el Sprint 3 desde la rama del Sprint 2. La actualización de main queda pendiente de autorización del profesor para integrar los PR previos.
+## Estado de publicación
 
-Antes de copiar los archivos del ZIP, en tu carpeta existente:
-
-```bash
-git switch feat/sprint-02-autenticacion
-git status --short
-git switch -c feat/sprint-03-crud-comodidades
-```
-
-Si `git status` muestra cambios propios pendientes, guárdalos antes de continuar. Extrae el ZIP y copia su contenido sobre la carpeta existente, conservando `.git` y `.env`. Crea una Issue titulada "Sprint 3 — CRUD de alojamientos y comodidades". Después:
-
-```bash
-npm install
-npm test
-npm run build
-git add src tests README.md package.json package-lock.json
-git commit -m "feat: completar frontend CRUD y comodidades"
-git push -u origin feat/sprint-03-crud-comodidades
-```
-
-Abre el PR con base `feat/sprint-02-autenticacion` y compare `feat/sprint-03-crud-comodidades`, referencia la nueva Issue y explica la dependencia del PR #3. Cuando se integren los trabajos anteriores, actualiza main y cambia la base a main.
-
-Título sugerido: Sprint 3 — CRUD de alojamientos y gestión de comodidades.
-
-Descripción sugerida: Añade publicación, consulta de alojamientos propios, edición y eliminación con confirmación, selección completa de comodidades y creación administrativa de comodidades. Aplica permisos por rol y propiedad y retorno local después del login. Verificación local automatizada: 37 pruebas aprobadas y build correcto. La validación end-to-end con Flask/MySQL y las migraciones 002/003 queda pendiente de ejecutar con el backend de Sprint 3.
-
-## ZIP de entrega
-
-Incluye código, pruebas, configuración, lockfile y README; excluye node_modules, dist, .env y .git. Tras guardar el commit:
-
-```bash
-git archive --format=zip --prefix=frontend-alojamientos/ --output=../frontend-alojamientos-sprint-3.zip HEAD
-```
+El historial remoto se clonó y revisó. Los Sprints 1, 2 y 3 están en sus ramas y PR #1, #3 y #5. La escritura autenticada en GitHub no estaba disponible durante la preparación: integrar main, publicar los cambios finales y verificar un clon de ese main final son pasos pendientes que debe ejecutar el titular de la cuenta. La copia limpia del artefacto final se instala y compila siguiendo esta documentación. El ZIP final publicado por el estudiante debe generarse desde main después de completar esos pasos.

@@ -46,8 +46,11 @@ export async function request(path, options = {}) {
     const mensaje = [datos?.mensaje, datos?.message, datos?.error?.message, datos?.error?.mensaje, datos?.error]
       .find((valor) => typeof valor === "string" && valor.trim());
 
+    const detalles = datos?.detalles && typeof datos.detalles === "object"
+      ? Object.entries(datos.detalles).map(([campo, mensajes]) => `${campo}: ${[].concat(mensajes).join(" ")}`).join(" ")
+      : "";
     const error = new Error(
-      mensaje || mensajesHTTP[response.status] || `La API respondió con el estado ${response.status}.`
+      detalles || mensaje || mensajesHTTP[response.status] || `La API respondió con el estado ${response.status}.`
     );
     error.status = response.status;
     throw error;

@@ -4,7 +4,7 @@ import { obtenerSesion } from "../state/sesion.js";
 export function AdminCrearComodidadPage() {
   return `<section class="container py-5 gestion-page"><h1>Crear comodidad</h1>
     <form id="comodidad-form" class="gestion-form"><label for="comodidad-nombre" class="form-label">Nombre</label>
-    <input id="comodidad-nombre" name="nombre" class="form-control mb-3" required>
+    <input id="comodidad-nombre" name="nombre" maxlength="100" class="form-control mb-3" required>
     <button type="submit" class="btn btn-sand">Crear comodidad</button><p class="mt-3" role="status" data-mensaje></p></form></section>`;
 }
 export function loadAdminCrearComodidadPage() {

@@ -9,3 +9,5 @@ coverage/
 frontend-alojamientos.zip
 
 .vite/
+*.zip
+*.log
