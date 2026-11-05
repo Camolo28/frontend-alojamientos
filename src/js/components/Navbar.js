@@ -9,10 +9,13 @@ export function Navbar(activePath = "") {
     const sesion = obtenerSesion();
 
   if (sesion) {
-    links.push(["/perfil", "Mi perfil", "bi-person-circle"]);
+    links.push(["/perfil", "Mi perfil", "bi-person-circle"],
+      ["/mis-alojamientos", "Mis alojamientos", "bi-house"],
+      ["/alojamientos/nuevo", "Publicar", "bi-plus-circle"]);
 
     if (sesion.usuario.rol === "admin") {
-      links.push(["/admin/usuarios", "Usuarios registrados", "bi-people"]);
+      links.push(["/admin/usuarios", "Usuarios registrados", "bi-people"],
+        ["/admin/comodidades/nueva", "Crear comodidad", "bi-plus-square"]);
     }
   } else {
     links.push(
@@ -22,7 +25,7 @@ export function Navbar(activePath = "") {
   }
 
   return `
-    <nav class="navbar navbar-expand-lg navbar-dark site-navbar sticky-top" aria-label="Navegación principal">
+    <nav class="navbar navbar-expand-xl navbar-dark site-navbar sticky-top" aria-label="Navegación principal">
       <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2" href="/" data-link aria-label="Refugio, inicio">
           <span class="brand-mark"><i class="bi bi-compass-fill" aria-hidden="true"></i></span>

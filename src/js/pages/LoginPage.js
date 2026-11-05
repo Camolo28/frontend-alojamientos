@@ -1,3 +1,4 @@
+import { destinoLocalPermitido } from "../utils/gestion.js";
 import { iniciarSesion } from "../api/auth.api.js";
 import { validarLogin } from "../utils/validaciones.js";
 import { navigate } from "../router/router.js";
@@ -39,6 +40,7 @@ export function loadLoginPage() {
   const form = document.querySelector("#form-login");
   if (!form) return;
 
+  const destino = destinoLocalPermitido(new URLSearchParams(window.location.search).get("next"));
   const boton = form.querySelector('button[type="submit"]');
   const mensaje = form.querySelector("#login-mensaje");
 
@@ -63,7 +65,7 @@ export function loadLoginPage() {
 
     try {
       await iniciarSesion(datos);
-      if (form.isConnected) navigate("/perfil");
+      if (form.isConnected) navigate(destino);
     } catch (error) {
       mensaje.className = "mt-3 mb-0 text-danger";
       mensaje.textContent = error.status === 401
